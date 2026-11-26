@@ -22,7 +22,7 @@ A chronological record of how this project was built: what was done in each phas
 
 ## Phase 0: Project setup
 
-_2026-11-26 · [commit](#) <!-- TODO: link to the commit after pushing -->_
+_2026-11-26 · [snapshot](https://github.com/danilopezsebastian-sngular/topos/tree/phase-0)_
 
 This phase set up the repository and made the decisions needed before writing any application code: stack, runtime, testing approach and hosting. No application code was written yet; scaffolding the Vite project is part of the next phase.
 
