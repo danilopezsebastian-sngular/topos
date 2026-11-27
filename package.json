@@ -12,6 +12,8 @@
 		"dev": "vite",
 		"build": "tsc && vite build",
 		"preview": "vite preview",
+		"test": "vitest run",
+		"test:watch": "vitest",
 		"lint": "oxlint",
 		"format": "prettier --write . --ignore-path .gitignore --ignore-path .prettierignore --ignore-path .git/info/exclude",
 		"format:check": "prettier --check . --ignore-path .gitignore --ignore-path .prettierignore --ignore-path .git/info/exclude"
@@ -20,13 +22,17 @@
 		"lit": "^3.3.3"
 	},
 	"devDependencies": {
+		"@vitest/browser-playwright": "^5.1.2",
 		"eslint-plugin-lit": "^2.3.1",
 		"eslint-plugin-wc": "^3.1.0",
 		"oxlint": "^1.95.0",
 		"oxlint-tsgolint": "^7.0.2009",
+		"playwright": "^1.65.1",
 		"prettier": "^3.10.1",
 		"typescript": "~7.0.2",
-		"vite": "^8.4.0"
+		"vite": "^8.4.0",
+		"vitest": "^5.1.2",
+		"vitest-browser-lit": "^1.0.1"
 	},
 	"packageManager": "pnpm@12.23.0",
 	"engines": {
