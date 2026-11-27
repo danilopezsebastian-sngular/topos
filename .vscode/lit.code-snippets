@@ -1,0 +1,47 @@
+{
+	"Lit element": {
+		"scope": "typescript",
+		"prefix": "lit",
+		"description": "Lit element named after the file (lam-foo.ts -> <lam-foo> / LamFoo)",
+		"body": [
+			"import { LitElement, css, html } from \"lit\";",
+			"import { customElement } from \"lit/decorators.js\";",
+			"",
+			"@customElement(\"${1:$TM_FILENAME_BASE}\")",
+			"export class ${2:${TM_FILENAME_BASE/(^|-)([a-z])/${2:/upcase}/g}} extends LitElement {",
+			"\tstatic styles = css`",
+			"\t\t:host {",
+			"\t\t\tdisplay: block;",
+			"\t\t}",
+			"\t`;",
+			"",
+			"\trender() {",
+			"\t\treturn html`$0`;",
+			"\t}",
+			"}",
+			"",
+			"declare global {",
+			"\tinterface HTMLElementTagNameMap {",
+			"\t\t\"$1\": $2;",
+			"\t}",
+			"}",
+			""
+		]
+	},
+	"Lit reactive property": {
+		"scope": "typescript",
+		"prefix": "lprop",
+		"description": "Public reactive property (@property)",
+		"body": [
+			"@property({ type: ${1|String,Number,Boolean,Array,Object|} }) ${2:name} = ${3:\"\"};"
+		]
+	},
+	"Lit internal state": {
+		"scope": "typescript",
+		"prefix": "lstate",
+		"description": "Internal reactive state (@state)",
+		"body": [
+			"@state() private ${1:name} = ${2:\"\"};"
+		]
+	}
+}
