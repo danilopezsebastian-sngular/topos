@@ -1,0 +1,29 @@
+{
+	"$schema": "./node_modules/oxlint/configuration_schema.json",
+	"plugins": ["typescript", "unicorn", "oxc", "import"],
+	"jsPlugins": ["eslint-plugin-lit", "eslint-plugin-wc"],
+	"env": {
+		"browser": true
+	},
+	"options": {
+		"typeAware": true
+	},
+	"categories": {
+		"correctness": "error",
+		"suspicious": "warn"
+	},
+	"rules": {
+		"lit/attribute-value-entities": "error",
+		"lit/binding-positions": "error",
+		"lit/no-duplicate-template-bindings": "error",
+		"lit/no-invalid-html": "error",
+		"lit/no-legacy-template-syntax": "error",
+		"lit/no-property-change-update": "error",
+		"wc/no-constructor-attributes": "error",
+		"wc/no-invalid-element-name": "error",
+		"wc/no-self-class": "error",
+		"import/no-unassigned-import": "off",
+		"typescript/unbound-method": "off"
+	},
+	"ignorePatterns": ["dist"]
+}
