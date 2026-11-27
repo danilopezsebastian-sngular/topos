@@ -1,3 +1,9 @@
 {
-	"recommendations": ["runem.lit-plugin", "editorconfig.editorconfig"]
+	"recommendations": [
+		"runem.lit-plugin",
+		"editorconfig.editorconfig",
+		"esbenp.prettier-vscode",
+		"oxc.oxc-vscode",
+		"vitest.explorer"
+	]
 }
