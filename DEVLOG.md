@@ -48,7 +48,7 @@ Decisions deferred to later phases: the router (phase 3), state management (phas
 
 ## Phase 1: Lit basics
 
-_2026-11-27 · [snapshot](https://github.com/danilopezsebastian-sngular/topos/tree/phase-1)_
+_2026-11-27 · [PR #1](https://github.com/danilopezsebastian-sngular/topos/pull/1) · [snapshot](https://github.com/danilopezsebastian-sngular/topos/tree/phase-1)_
 
 Time to write some actual Lit. I scaffolded the project with Vite's `lit-ts` template, cleaned out the demo and renamed the game to **Lit-a-mole** (with `lam-` as the prefix for every custom element). Imports go through a `#src/*` alias, so there's no `../../` mess, and `main.ts` is the single entry point where global setup like the theme CSS lives.
 
