@@ -76,12 +76,14 @@ export class LamPlayerForm extends LitElement {
 					START
 				</button>
 			</form>
-			${!this.validateName()
-				? html`<p>
-						Please enter a valid name between ${this.minLength} and
-						${this.maxLength} characters.
-					</p>`
-				: nothing}
+			${
+				!this.validateName()
+					? html`<p>
+							Please enter a valid name between ${this.minLength} and
+							${this.maxLength} characters.
+						</p>`
+					: nothing
+			}
 		`;
 	}
 }

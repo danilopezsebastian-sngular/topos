@@ -20,11 +20,11 @@ pnpm install
 pnpm dev       # dev server at http://localhost:5173
 ```
 
-| Script | What it does |
-|---|---|
-| `pnpm dev` | Starts the Vite dev server with hot reload |
-| `pnpm build` | Type-checks with `tsc` and builds for production into `dist/` |
-| `pnpm preview` | Serves the production build locally |
+| Script         | What it does                                                  |
+| -------------- | ------------------------------------------------------------- |
+| `pnpm dev`     | Starts the Vite dev server with hot reload                    |
+| `pnpm build`   | Type-checks with `tsc` and builds for production into `dist/` |
+| `pnpm preview` | Serves the production build locally                           |
 
 ## License
 

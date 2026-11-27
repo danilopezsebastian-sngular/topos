@@ -9,22 +9,22 @@ A chronological record of how this project was built: what was done in each phas
 
 ## Key decisions
 
-| Decision | Why (in one line) | Phase |
-|---|---|---|
-| Lit + TypeScript | Standards-based web components with a small runtime; aligned with the target team's stack | 0 |
-| Vite | Native ESM dev server, official `lit-ts` template and it enables Vitest | 0 |
-| Node 26 LTS, pinned in `.nvmrc` | Same runtime locally and in CI on the current LTS line | 0 |
-| pnpm 12, pinned via `packageManager` | Fast, disk-efficient and strict about undeclared dependencies; no Corepack needed | 0 |
-| Vitest Browser Mode + Playwright | Components are tested in a real browser, sharing Vite's config | 0 |
-| GitHub Pages, History API routing + `404.html` fallback | Free static hosting next to the code, with real URLs | 0 |
-| English for code, commits and docs | Standard language for code and open source | 0 |
-| `.editorconfig` with tabs | Accessible indentation width; spaces where the format requires it (YAML) | 0 |
-| MIT license | Permissive and widely understood | 0 |
-| Product name Lit-a-mole, element prefix `lam-` | A bit of fun; the prefix keeps custom element names unique | 1 |
-| Legacy decorators (`experimentalDecorators`) | What the Lit template and most of its docs use; no `accessor` keyword needed | 1 |
-| `strict` declared explicitly | TypeScript 7 enables it by default, but the config should say so | 1 |
-| `#src/*` subpath imports | No `../../` imports; a Node standard defined once in `package.json` | 1 |
-| App shell + reusable components | `lam-app` only hosts things; components know nothing about the app | 1 |
+| Decision                                                | Why (in one line)                                                                         | Phase |
+| ------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ----- |
+| Lit + TypeScript                                        | Standards-based web components with a small runtime; aligned with the target team's stack | 0     |
+| Vite                                                    | Native ESM dev server, official `lit-ts` template and it enables Vitest                   | 0     |
+| Node 26 LTS, pinned in `.nvmrc`                         | Same runtime locally and in CI on the current LTS line                                    | 0     |
+| pnpm 12, pinned via `packageManager`                    | Fast, disk-efficient and strict about undeclared dependencies; no Corepack needed         | 0     |
+| Vitest Browser Mode + Playwright                        | Components are tested in a real browser, sharing Vite's config                            | 0     |
+| GitHub Pages, History API routing + `404.html` fallback | Free static hosting next to the code, with real URLs                                      | 0     |
+| English for code, commits and docs                      | Standard language for code and open source                                                | 0     |
+| `.editorconfig` with tabs                               | Accessible indentation width; spaces where the format requires it (YAML)                  | 0     |
+| MIT license                                             | Permissive and widely understood                                                          | 0     |
+| Product name Lit-a-mole, element prefix `lam-`          | A bit of fun; the prefix keeps custom element names unique                                | 1     |
+| Legacy decorators (`experimentalDecorators`)            | What the Lit template and most of its docs use; no `accessor` keyword needed              | 1     |
+| `strict` declared explicitly                            | TypeScript 7 enables it by default, but the config should say so                          | 1     |
+| `#src/*` subpath imports                                | No `../../` imports; a Node standard defined once in `package.json`                       | 1     |
+| App shell + reusable components                         | `lam-app` only hosts things; components know nothing about the app                        | 1     |
 
 ## Phase 0: Project setup
 
