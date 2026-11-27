@@ -4,6 +4,9 @@
 	"private": true,
 	"version": "0.0.0",
 	"type": "module",
+	"imports": {
+		"#src/*": "./src/*"
+	},
 	"license": "MIT",
 	"scripts": {
 		"dev": "vite",
