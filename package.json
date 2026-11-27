@@ -1,6 +1,6 @@
 {
 	"name": "topos",
-	"description": "A Whack-a-mole PWA game made with Lit",
+	"description": "Lit-a-mole, a Whack-a-mole PWA game made with Lit",
 	"private": true,
 	"version": "0.0.0",
 	"type": "module",

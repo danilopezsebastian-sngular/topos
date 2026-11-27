@@ -1,6 +1,6 @@
-# Whack-a-mole
+# Lit-a-mole
 
-Hi! I'm Daniel and this is an exercise project of a Whack-a-mole PWA game developed with Lit. The goal of this project is to practice Lit concepts, build a little game and have some fun!
+Hi! I'm Daniel and this is Lit-a-mole, an exercise project of a Whack-a-mole PWA game developed with Lit. The goal of this project is to practice Lit concepts, build a little game and have some fun!
 
 The project is divided into phases, of which you can read a [development log](DEVLOG.md).
 
