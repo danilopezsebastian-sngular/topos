@@ -1,1 +1,1 @@
-import "./app/lam-app.ts";
+import "#src/app/lam-app.ts";
