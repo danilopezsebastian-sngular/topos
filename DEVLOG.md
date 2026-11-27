@@ -6,45 +6,50 @@ A chronological record of how this project was built: what was done in each phas
 
 - [Phase 0: Project setup](#phase-0-project-setup)
 - [Phase 1: Lit basics](#phase-1-lit-basics)
+- [Phase 2: Tooling and deploy](#phase-2-tooling-and-deploy)
 
 ## Key decisions
 
-| Decision | Why (in one line) | Phase |
-|---|---|---|
-| Lit + TypeScript | Standards-based web components with a small runtime; aligned with the target team's stack | 0 |
-| Vite | Native ESM dev server, official `lit-ts` template and it enables Vitest | 0 |
-| Node 26 LTS, pinned in `.nvmrc` | Same runtime locally and in CI on the current LTS line | 0 |
-| pnpm 12, pinned via `packageManager` | Fast, disk-efficient and strict about undeclared dependencies; no Corepack needed | 0 |
-| Vitest Browser Mode + Playwright | Components are tested in a real browser, sharing Vite's config | 0 |
-| GitHub Pages, History API routing + `404.html` fallback | Free static hosting next to the code, with real URLs | 0 |
-| English for code, commits and docs | Standard language for code and open source | 0 |
-| `.editorconfig` with tabs | Accessible indentation width; spaces where the format requires it (YAML) | 0 |
-| MIT license | Permissive and widely understood | 0 |
-| Product name Lit-a-mole, element prefix `lam-` | A bit of fun; the prefix keeps custom element names unique | 1 |
-| Legacy decorators (`experimentalDecorators`) | What the Lit template and most of its docs use; no `accessor` keyword needed | 1 |
-| `strict` declared explicitly | TypeScript 7 enables it by default, but the config should say so | 1 |
-| `#src/*` subpath imports | No `../../` imports; a Node standard defined once in `package.json` | 1 |
-| App shell + reusable components | `lam-app` only hosts things; components know nothing about the app | 1 |
+| Decision                                                | Why (in one line)                                                                         | Phase |
+| ------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ----- |
+| Lit + TypeScript                                        | Standards-based web components with a small runtime; aligned with the target team's stack | 0     |
+| Vite                                                    | Native ESM dev server, official `lit-ts` template and it enables Vitest                   | 0     |
+| Node 26 LTS, pinned in `.nvmrc`                         | Same runtime locally and in CI on the current LTS line                                    | 0     |
+| pnpm 12, pinned via `packageManager`                    | Fast, disk-efficient and strict about undeclared dependencies; no Corepack needed         | 0     |
+| Vitest Browser Mode + Playwright                        | Components are tested in a real browser, sharing Vite's config                            | 0     |
+| GitHub Pages, History API routing + `404.html` fallback | Free static hosting next to the code, with real URLs                                      | 0     |
+| English for code, commits and docs                      | Standard language for code and open source                                                | 0     |
+| `.editorconfig` with tabs                               | Accessible indentation width; spaces where the format requires it (YAML)                  | 0     |
+| MIT license                                             | Permissive and widely understood                                                          | 0     |
+| Product name Lit-a-mole, element prefix `lam-`          | A bit of fun; the prefix keeps custom element names unique                                | 1     |
+| Legacy decorators (`experimentalDecorators`)            | What the Lit template and most of its docs use; no `accessor` keyword needed              | 1     |
+| `strict` declared explicitly                            | TypeScript 7 enables it by default, but the config should say so                          | 1     |
+| `#src/*` subpath imports                                | No `../../` imports; a Node standard defined once in `package.json`                       | 1     |
+| App shell + reusable components                         | `lam-app` only hosts things; components know nothing about the app                        | 1     |
+| Prettier with zero config                               | Nothing to argue about; indentation comes from `.editorconfig`                            | 2     |
+| oxlint instead of ESLint                                | typescript-eslint can't run on TypeScript 7; oxlint can, with type-aware and Lit rules    | 2     |
+| `vitest-browser-lit` for rendering in tests             | Testing Library-style queries that see through Shadow DOM                                 | 2     |
+| Tests next to their component (`*.test.ts`)             | Easy to find, and they move together with the component                                   | 2     |
+| One CI workflow; deploy job only on `main`              | Nothing goes live unless lint, tests and build pass                                       | 2     |
+| `404.html` copied in CI, `base: '/topos/'` everywhere   | The fallback is a GitHub Pages concern; dev and prod share the same URLs                  | 2     |
 
 ## Phase 0: Project setup
 
 _2026-11-26 · [snapshot](https://github.com/danilopezsebastian-sngular/topos/tree/phase-0)_
 
-This phase set up the repository and made the decisions needed before writing any application code: stack, runtime, testing approach and hosting. No application code was written yet; scaffolding the Vite project is part of the next phase.
+No code yet: this phase was about setting up the repo and making the big calls before writing a single component.
 
-Lit was chosen because it builds on web standards: components are native custom elements with Shadow DOM, and Lit adds reactive properties and efficient templating on top with a small runtime. It is also the stack used by the team this project is aimed at, and learning it coming from React is one of the goals of the exercise. Vite was chosen over Webpack because of its fast native-ESM dev server, its official Lit + TypeScript template and, above all, because it enables Vitest, so the app and its tests share the same configuration and transforms.
+I went with **Lit** because it's built on web standards (components are just custom elements with Shadow DOM) and it's the stack of the team this project is for, so learning it coming from React is half the point. **Vite** because it's fast, has an official Lit + TypeScript template and brings Vitest along, so the app and the tests share the same config.
 
-The runtime is pinned to Node 26 (the current LTS line) in `.nvmrc`, so the same version is used locally and in CI. pnpm 12 is the package manager, for its speed, disk efficiency and strictness: code cannot import packages that are not declared in `package.json`. Its exact version will be pinned with the `packageManager` field in `package.json`. Corepack is not used because Node no longer bundles it since v25, and pnpm can manage its own version from that field.
+Node 26 LTS is pinned in `.nvmrc` and pnpm 12 in `packageManager`. pnpm manages its own version now, so there's no need for Corepack, which Node stopped bundling anyway.
 
-Unit tests will run with Vitest Browser Mode using Playwright as the provider. jsdom supports custom elements and basic Shadow DOM, but it lacks constructable stylesheets (`adoptedStyleSheets`, which Lit uses to apply styles), real layout and CSS, and faithful focus and pointer behaviour, as well as browser APIs this app will rely on, such as vibration and service workers. Web Test Runner with `@open-wc/testing` also runs tests in real browsers and is the more common choice in the Lit ecosystem; Vitest was preferred for its integration with Vite and its Jest-like API. The trade-offs are slower test runs than a simulated DOM, an extra provider dependency that downloads browsers (locally and in CI) and straying slightly from the most common Lit setup. Playwright can be reused for end-to-end tests later.
+For tests I picked **Vitest Browser Mode with Playwright**, so components run in a real Chromium instead of jsdom. jsdom lacks `adoptedStyleSheets` (how Lit applies styles), real layout and APIs like vibration or service workers. Web Test Runner is the more classic choice for Lit, but Vitest feels like home after Jest. The price is slower tests and a browser download.
 
-The app will be hosted on GitHub Pages, next to the code and deployed from CI. Routing will use the History API, so the app has real URLs such as `/topos/game`, and the choice of router stays open. Since GitHub Pages cannot rewrite unknown paths to `index.html`, the deploy will copy `index.html` to `404.html`: a direct visit to any route loads the app, and the router then decides what to show or redirects to home. The trade-off is that a first direct visit to a deep link gets an HTTP 404 status even though the page renders correctly; once installed, the service worker serves navigations itself. Vite's `base` will be set to `/topos/` so assets resolve under the repository path. Hash routing was considered because it needs no fallback, but it was discarded because it fits worse with Lit routers and gives less clean URLs.
+Hosting is **GitHub Pages** with real URLs (History API). Pages can't rewrite unknown paths to `index.html`, so the trick is to ship a copy of it as `404.html`. The catch: a first visit to a deep link answers with an HTTP 404 even though the page works fine. Hash routing would avoid that, but it gives uglier URLs and fits worse with Lit routers.
 
-Everything versioned (code, commits and documentation) is written in English. An `.editorconfig` sets UTF-8, LF line endings, final newlines and trimming of trailing whitespace. Indentation uses tabs for accessibility, since each reader can choose the width, with two exceptions: YAML uses spaces because the format forbids tabs, and Markdown keeps trailing whitespace because two trailing spaces mean a line break. The project is licensed under MIT.
+The rest is housekeeping: everything versioned is in English, `.editorconfig` uses tabs (spaces in YAML, which requires them), and the license is MIT.
 
-Decisions deferred to later phases: the router (phase 3), state management (phase 6), the PWA tooling (phase 7) and end-to-end testing (phase 8).
-
-**What I learned:** Corepack, the tool that used to enforce the `packageManager` version, is no longer bundled with Node, and pnpm now handles it on its own. jsdom is not enough for testing web components, but not because it lacks Shadow DOM: what it lacks is a real rendering engine and the browser APIs around it. Static hosts need an explicit strategy for single-page app routes, and hash routing and a `404.html` fallback solve the same problem at different costs.
+**What I learned:** jsdom's problem with web components isn't Shadow DOM, it's that there's no real browser behind it. And static hosting needs a plan for SPA routes: hash routing and a `404.html` fallback solve the same problem at different costs.
 
 ## Phase 1: Lit basics
 
@@ -63,3 +68,19 @@ Lit concepts used in this phase:
 - **Custom events**: the form dispatches `lam-player-form-submit` with `bubbles` and `composed`, so it can cross the shadow boundary, and the event is typed in `HTMLElementEventMap`.
 
 **What surprised me coming from React:** a missing import doesn't fail loudly, because a tag in a template is just a string. In Lit, `false` inside a template renders as the text "false", so ``cond && html`...` `` is a trap. And there's no virtual DOM: Lit only updates the dynamic parts of the template.
+
+## Phase 2: Tooling and deploy
+
+_2026-11-27 · [PR #2](https://github.com/danilopezsebastian-sngular/topos/pull/2) · [snapshot](https://github.com/danilopezsebastian-sngular/topos/tree/phase-2)_
+
+Not the most exciting phase, but from now on every change gets checked and deployed on its own.
+
+**Formatting** is Prettier with zero config, picking up tabs from `.editorconfig`. One detail: Prettier respects `.gitignore` but not `.git/info/exclude`, so the scripts pass both as ignore paths to keep it away from local-only files.
+
+**Linting** was the plot twist. The plan was ESLint + typescript-eslint + `eslint-plugin-lit`, but typescript-eslint needs TypeScript's compiler JS API, and TypeScript 7 (the Go rewrite) doesn't ship it anymore, so it crashes on load. Downgrading TypeScript just for the linter felt wrong, so I switched to **oxlint**. It's written in Rust, its type-aware rules run on tsgolint (built on TypeScript 7 itself), and it can load ESLint plugins, so `eslint-plugin-lit` and `eslint-plugin-wc` still work. I turned off `unbound-method`: it's a false positive in Lit, because `@click=${this.handleX}` is already bound to the component.
+
+**Testing** uses Vitest Browser Mode as planned, in headless Chromium through Playwright, with `vitest-browser-lit` to render templates. It feels a lot like React Testing Library: ``render(html`...`)``, `getByRole`, `userEvent.type`, and the locators go through Shadow DOM, so tests never have to dig into `shadowRoot`. Tests live next to their component. The first ones cover the player form (the button stays disabled until the name is valid, the hint, trimming and the submit event) and check that `lam-app` renders it. Small gotcha: Lit splits text into several nodes around each `${...}`, so matching a whole sentence with interpolated values didn't work.
+
+**CI/CD** is a single GitHub Actions workflow. Every push and PR runs lint, format check, tests and build, and on `main` a second job deploys `dist/` to GitHub Pages, so nothing goes live unless everything passes. The `404.html` copy happens in the workflow because it's a GitHub Pages thing, not part of the build. Vite's `base` is `/topos/` everywhere, so the dev server runs at `localhost:5173/topos/` with the same URLs as production.
+
+**What I learned:** a new major version of a core tool can quietly break the tools around it, and checking peer dependencies before installing would have saved me some time. Also, testing web components in a real browser is less painful than I expected.
